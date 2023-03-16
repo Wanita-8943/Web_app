@@ -20,12 +20,12 @@ def upload():
     return render_template('upload_completed.html')
     #return send_file('processed_image.png', mimetype='image/png')
 
-@app.route('/playvid', methods=['POST'])
-def playvid():
-    text = request.form['text_input']
-    subprocess.run(["python", "/home/conceal/ConGUN-Code/ConGun-Visualization/python_script_person.py", "-uuid", text])
-    print(text)
-    return render_template('video_player.html')
+# @app.route('/playvid', methods=['POST'])
+# def playvid():
+#     text = request.form['text_input']
+#     subprocess.run(["python", "/home/conceal/ConGUN-Code/ConGun-Visualization/python_script_person.py", "-uuid", text])
+#     print(text)
+#     return render_template('video_player.html')
 
 
 if __name__ == '__main__':
