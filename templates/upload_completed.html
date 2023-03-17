@@ -3,29 +3,19 @@
   <head>
     <title>completed</title>
   </head>
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload.css') }}">
   <!-- <form class="form-horizontal" action="/submit" method="post2" enctype="multipart/form-data"> -->
+
+  <div class= "zone">
   <body>
+    <h1>ผลลัพธ์การคาดการณ์อายุคนจากภาพพาโนรามา</h1>
+    <img src={{ url_for('static', filename='panoramic.jpg')}} height="180" alt="processed image">
+    <h2> อายุ   : <i> {{prediction1}} </i></h2>
+    <h2> เพศ   : <i> {{prediction2}} </i></h2> 
 
-    <h1>the Image</h1>
-    <img src={{ url_for('static', filename='panoramic.jpg') }} height="300" alt="processed image">
   </body>
-
-
-  <!-- <div class="form-group">        
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-success">Submit</button>
-    </div>
   </div>
-</form>
 
-{% if prediction %}
-<img src="{{img_path}}" height="400px" width="400px">
-<h2> Age   : <i> {{prediction1}} </i></h2>
-<h2> Gender   : <i> {{prediction2}} </i></h2> -->
-
-
-{% endif %}
 
 </div>
 </html>
