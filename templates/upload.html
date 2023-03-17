@@ -2,13 +2,28 @@
 <html>
   <head>
     <title>Image Upload</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}"> -->
-  </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload.css') }}">
+  </head>  
   <body>
+  <div class= "zone">
+
+    <br></br>
+
     <h1>Image Upload</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="image" accept=".jpg, .jpeg, .png ">
+  <div id="dropZ">
+<img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" height="180"/>
+<br></br>
+
+
+<form action="/upload" method="post" enctype="multipart/form-data" >
+    </div>
+      <div class = "selectFile">
+      <input type="file" name="image" accept=".jpg, .jpeg">
+
       <input type="submit" value="Upload">
     </form>
   </body>
+</div>
+</div>
+  
 </html>

@@ -12,13 +12,9 @@ def index():
 def upload():
     file = request.files['image']
     image = Image.open(file)
-    # Process the image here
-    processed_image = image.rotate(45)
-    # Save the processed image to a fileS
-    processed_image.save('static/processed_image.png')
-    # Return the processed image file as a response
+    image.save('static/panoramic.jpg')
+
     return render_template('upload_completed.html')
-    #return send_file('processed_image.png', mimetype='image/png')
 
 # @app.route('/playvid', methods=['POST'])
 # def playvid():
