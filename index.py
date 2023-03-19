@@ -47,6 +47,7 @@ model2.make_predict_function()
 #     g = np.expand_dims(g, axis=0)
 #     result = model2.predict(g)
 #     return gender[result.argmax()]
+my_tuple = tuple(age)
 
 def predict_image1(img_path):
     # Read the image and preprocess it
@@ -55,7 +56,7 @@ def predict_image1(img_path):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return age[result.argmax()]
+    return my_tuple[int(result[0])]
 
 def predict_image2(img_path):
     # Read the image and preprocess it
