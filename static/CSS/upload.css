@@ -1,8 +1,9 @@
-@import url(https://fonts.googleapis.com/css?family=Exo+2:400,700,500,300);
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@100&display=swap');
 
 body {
   background: #ebeff2;
-  font-family: "Exo 2";
+  font-family: 'Prompt', sans-serif;
+  font-size: 15px;
 }
 
 .zone {      
