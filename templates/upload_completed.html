@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>completed</title>
+    <title>Human Age Estimation Through Panoramic Radiographs Images With Deep Neural Network</title>
   </head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload_completed.css') }}">
   <!-- <form class="form-horizontal" action="/submit" method="post2" enctype="multipart/form-data"> -->
 
   <div class= "zone">
   <body>
     <h1>ผลลัพธ์การคาดการณ์อายุคนจากภาพพาโนรามา</h1>
-    <img src={{ url_for('static', filename='panoramic.jpg')}} height="180" alt="processed image">
+    <img src={{ url_for('static', filename='panoramic.jpg')}} height="250" alt="processed image">
     <h2> อายุ   : <i> {{prediction1}} </i></h2>
     <h2> เพศ   : <i> {{prediction2}} </i></h2> 
 
