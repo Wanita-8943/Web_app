@@ -1,5 +1,7 @@
 ## Web_app
-
+### 1 pip install flask
+### 1 pip install tensorflow
+### 1 pip install numpy
 ### 1 pip install efficientnet
 
 ### 2 git clone https://github.com/Wanita-8943/efficientnet_keras_transfer_learning.git
