@@ -7,7 +7,7 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 
 app = Flask(__name__)
 
-age = {0: '7', 1: '8', 2: '9', 3: '10', 4: '11', 5: '12', 6: '13', 7: '14', 8: '15', 9: '16', 10: '17', 11: '18', 12: '19', 13: '20', 14: '21', 15: '22', 16: '23', 17: '24', 18: '25'}
+# age = {0: '7', 1: '8', 2: '9', 3: '10', 4: '11', 5: '12', 6: '13', 7: '14', 8: '15', 9: '16', 10: '17', 11: '18', 12: '19', 13: '20', 14: '21', 15: '22', 16: '23', 17: '24', 18: '25'}
 gender = {0: 'Female', 1: 'Male'}
 
 import sys
@@ -24,10 +24,23 @@ get_custom_objects().update({
 })
 
 model1 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Age.h5')
+model1.make_predict_function()
+
+
+sys.path.append('/root/WebApp/Web_app/templates/Gender.h5')
+
+from efficientnet.layers import Swish, DropConnect
+from efficientnet.model import ConvKernalInitializer
+from tensorflow.keras.utils import get_custom_objects
+
+get_custom_objects().update({
+    'ConvKernalInitializer': ConvKernalInitializer,
+    'Swish': Swish,
+    'DropConnect':DropConnect
+})
 model2 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Gender.h5')
 
 
-model1.make_predict_function()
 model2.make_predict_function()
 
 # def predict_image1(img_path):
@@ -47,7 +60,7 @@ model2.make_predict_function()
 #     g = np.expand_dims(g, axis=0)
 #     result = model2.predict(g)
 #     return gender[result.argmax()]
-my_tuple = tuple(age)
+# my_tuple = tuple(age)
 
 def predict_image1(img_path):
     # Read the image and preprocess it
@@ -56,7 +69,7 @@ def predict_image1(img_path):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return my_tuple[int(result[0])]
+    return np.around(result[0]+6, 2)
 
 def predict_image2(img_path):
     # Read the image and preprocess it
@@ -87,7 +100,7 @@ def upload():
         gender_pred = predict_image2(img_path)
 
         # Render the prediction result
-        return render_template('upload_completed.html', prediction1=age_pred, prediction2=gender_pred)
+        return render_template('upload_completed.html', prediction1=age_pred[0], prediction2=gender_pred)
 
 if __name__ == '__main__':
     app.run(debug=True)
