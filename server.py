@@ -39,23 +39,49 @@ model2 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Gender.h5')
 
 model2.make_predict_function()
 
-def predict_image1(img_path):
+def predict_image1(img_path2):
     # Read the image and preprocess it
-    img = image.load_img(img_path, target_size=(150, 150))
+    img = image.load_img(img_path2, target_size=(150, 150))
     x = image.img_to_array(img)
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
     return np.around(result[0]+6, 2)
 
-def predict_image2(img_path):
+def predict_image2(img_path2):
     # Read the image and preprocess it
-    img = image.load_img(img_path, target_size=(150, 150))
+    img = image.load_img(img_path2, target_size=(150, 150))
     g = image.img_to_array(img)
     g = g.reshape((1,) + g.shape) 
     g /= 255.
     result = model2.predict(g)
+    print(result)
+    print(result[result.argmax()][0])
     return gender[result.argmax()]
+    # return gender[result()]
+
+def predict_image3(img_path3):
+    # Read the image and preprocess it
+    img = image.load_img(img_path3, target_size=(150, 150))
+    x = image.img_to_array(img)
+    x = x.reshape((1,) + x.shape) 
+    x /= 255.
+    result = model1.predict(x)
+    return np.around(result[0]+6, 2)
+
+
+def predict_image4(img_path2):
+    # Read the image and preprocess it
+    img = image.load_img(img_path2, target_size=(150, 150))
+    g = image.img_to_array(img)
+    g = g.reshape((1,) + g.shape) 
+    g /= 255.
+    result = model2.predict(g)
+    print(result)
+    print(result[result.argmax()])
+    return gender[result.argmax()]
+
+
 
 # routes
 @app.route('/')
@@ -82,8 +108,10 @@ def upload():
         right = img.size[0]-((1-frac))*img.size[0] 
         bottom = img.size[1]
         cropped_left = img.crop((left, upper, right, bottom))
-        #save setting by youreself
-        cropped_left.save('static/''Rt_'+filename)
+        #save setting by youreself'
+        img_path2 = 'static/Rt_panoramic.jpg'
+        cropped_left.save(img_path2)
+
 
         #right ---------------------------------------------------
         left = img.size[0]*((1-frac))
@@ -100,15 +128,19 @@ def upload():
 
         #flip image
         out = im.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-        out.save('static/Flip_'+filename)
-        
+        img_path3 = 'static/Flip_panoramic.jpg'
+        out.save(img_path3)
 
         # Predict the age
-        age_pred = predict_image1(img_path)
-        gender_pred = predict_image2(img_path)
+        age_pred = predict_image1(img_path2)+predict_image3(img_path3)/2
+        age_pred1 = np.around(age_pred[0], 2)
+        # gender_pred = predict_image2(img_path2)
+        gender_pred = predict_image2(img_path2)
+        gender_pred= predict_image2(img_path3)
 
+        
         # Render the prediction result
-        return render_template('test.html', prediction1=age_pred[0], prediction2=gender_pred)
+        return render_template('test.html', prediction1=age_pred1, prediction2=gender_pred)
 
 
 
