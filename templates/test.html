@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Human Age Estimation Through Panoramic Radiographs Images With Deep Neural Network</title>
+  </head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload_completed.css') }}">
+  <!-- <form class="form-horizontal" action="/submit" method="post2" enctype="multipart/form-data"> -->
+
+  <div class= "zone">
+  <body>
+    <h1>ผลลัพธ์การคาดการณ์อายุคนจากภาพพาโนรามา</h1>
+    <img src={{ url_for('static', filename='panoramic.jpg')}} height="250" alt="processed image">
+    <h2> อายุ   :  {{prediction1}} ปี </h2>
+    <h2> เพศ   :  {{prediction2}} </h2> 
+
+
+  </body>
+  </div>
+
+
+</div>
+</html>

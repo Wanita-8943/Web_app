@@ -93,7 +93,7 @@ def upload():
         file = request.files['image']
         img_path = 'static/panoramic.jpg'
         file.save(img_path)
-
+  
         # Predict the age
 
         age_pred = predict_image1(img_path)
