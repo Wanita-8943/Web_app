@@ -1,0 +1,103 @@
+@import url(https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap);
+
+body {
+  background: #ebeff2;
+  font-family: "Mitr", sans-serif;
+  font-size: 15px;
+}
+
+.zone {      
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: radial-gradient(ellipse at center,white 0,white 100%);
+  width:60%;
+  height:60%;  
+  border:5px dashed gray;
+  text-align:center;
+  color: gray;
+  z-index: 20;
+  transition: all 0.3s ease-out;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.05),inset 0 0 .25em 0 rgba(0,0,0,.25);
+  
+.btnCompression {
+    .btn {
+
+    } 
+    .active {
+      background: white;
+      color:gray;
+    }
+  }
+  i {
+    text-align: center;
+    font-size: 10em;  
+    color:#fff;
+    margin-top: 50px;
+  }
+  .selectFile {
+    height: 50px;
+    margin: 20px auto;
+    position: relative;
+    width: 200px;          
+  }
+
+  label, input {
+    cursor: pointer;
+    display: block;
+    height: 50px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-radius: 5px;          
+  }
+
+  label {
+    background: #fff;
+    color:#03989E;
+    display: inline-block;
+    font-size: 1.2em;
+    line-height: 50px;
+    padding: 0;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-weight: 400;   
+    box-shadow: 0 1px 1px white;
+  }
+
+  input[type=file] {
+    opacity: 0;
+  }
+
+}
+.zone.in {
+  color:white;
+  border-color:white;
+  background: radial-gradient(ellipse at center,#03989E 0,#03989E 100%);
+  i {          
+    color:#fff;
+  }
+  label {
+    background: #fff;
+    color:#03989E;
+  }
+}
+.zone.hover {
+  color:white;
+  border-color:white;
+  background:#fff;
+  border:5px dashed white;
+  i {          
+    color:#03989E;
+  }
+  label {
+    background: #fff;
+    color:#03989E;
+  }
+}
+.zone.fade {
+  transition: all 0.3s ease-out;
+  opacity: 1;
+}
