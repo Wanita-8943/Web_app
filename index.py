@@ -45,7 +45,8 @@ def predict_Age1(Rt):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return np.around(result[0]+6, 2)
+    return result[0]
+    # return np.around(result[0], 2)
 
 def predict_Gender1(Rt):
     # Read the image and preprocess it
@@ -65,7 +66,8 @@ def predict_Age2(Lt):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return np.around(result[0]+6, 2)
+    return result[0]
+    # return np.around(result[0], 2)
 
 
 def predict_Gender2(Lt):
@@ -131,8 +133,8 @@ def upload():
 
         # Predict the age
         # Predict the age
-        age_pred = predict_Age1(Rt)+predict_Age2(Lt)/2
-        age_pred1 = np.around(age_pred[0], 2)
+        age_pred = (predict_Age1(Rt)+predict_Age2(Lt))/2
+        age_pred1 = np.around(age_pred[0]+6, 2)
 
         gender_pred1 = predict_Gender1(Rt)
         gender_pred2 = predict_Gender2(Lt)
