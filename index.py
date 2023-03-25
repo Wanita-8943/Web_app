@@ -48,6 +48,17 @@ def predict_Age1(Rt):
     return result[0]
     # return np.around(result[0], 2)
 
+
+# def predict_Gender1(Rt):
+#     # Read the image and preprocess it
+#     img = image.load_img(Rt, target_size=(150, 150))
+#     g = image.img_to_array(img)
+#     g = g.reshape((1,) + g.shape)
+#     g /= 255.
+#     result = model2.predict(g)
+#     print(result[0])
+#     print(result.argmax())
+#     return gender[result.argmax()]
 def predict_Gender1(Rt):
     # Read the image and preprocess it
     img = image.load_img(Rt, target_size=(150, 150))
@@ -57,7 +68,7 @@ def predict_Gender1(Rt):
     result = model2.predict(g)
     print(result[0])
     print(result.argmax())
-    return gender[result.argmax()]
+    return result[0], result.argmax()
 
 def predict_Age2(Lt):
     # Read the image and preprocess it
@@ -69,7 +80,6 @@ def predict_Age2(Lt):
     return result[0]
     # return np.around(result[0], 2)
 
-
 def predict_Gender2(Lt):
     img = image.load_img(Lt, target_size=(150, 150))
     g = image.img_to_array(img)
@@ -78,7 +88,16 @@ def predict_Gender2(Lt):
     result = model2.predict(g)
     print(result[0])
     print(result.argmax())
-    return gender[result.argmax()]
+    return result[0], result.argmax()
+# def predict_Gender2(Lt):
+#     img = image.load_img(Lt, target_size=(150, 150))
+#     g = image.img_to_array(img)
+#     g = g.reshape((1,) + g.shape)
+#     g /= 255.
+#     result = model2.predict(g)
+#     print(result[0])
+#     print(result.argmax())
+#     return gender[result.argmax()]
     
 
 
@@ -136,13 +155,13 @@ def upload():
         age_pred = (predict_Age1(Rt)+predict_Age2(Lt))/2
         age_pred1 = np.around(age_pred[0]+6, 2)
 
-        gender_pred1 = predict_Gender1(Rt)
-        gender_pred2 = predict_Gender2(Lt)
+        result1, gender_pred1 = predict_Gender1(Rt)
+        result2, gender_pred2 = predict_Gender2(Lt)
 
-        if gender_pred1 > gender_pred2:
-            gender_pred = gender_pred1
+        if (result1 > result2).all():
+            gender_pred = gender[gender_pred1]
         else:
-            gender_pred = gender_pred2
+            gender_pred = gender[gender_pred2]
 
         # Render the prediction result
         return render_template('upload_completed.html', prediction1=age_pred1, prediction2=gender_pred)
