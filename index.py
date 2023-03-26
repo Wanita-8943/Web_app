@@ -135,11 +135,21 @@ def upload():
         result1, gender_pred1 = predict_Gender1(Rt)
         result2, gender_pred2 = predict_Gender2(Lt)
 
-        if (result1 > result2).any():
+        if result1[0] > result1[1]:
+            max_result1 = result1[0]
+        else:
+            max_result1 = result1[1]
+
+        if result2[0] > result2[1]:
+            max_result2 = result2[0]
+        else:
+            max_result2 = result2[1]
+
+        if max_result1 > max_result2:
             gender_pred = gender_pred1
         else:
             gender_pred = gender_pred2
-
+       
         # Render the prediction result
         return render_template('upload_completed.html', prediction1=age_pred1, prediction2=gender_pred)
 
