@@ -124,7 +124,7 @@ def upload():
 
         #flip image
         out = im.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-        Lt = 'static/Flip_panoramic.jpg'
+        Lt = 'static/Flip_panoramic.jpg'   
         out.save(Lt)
 
         # Predict the age
