@@ -2,35 +2,13 @@
 <html>
   <head>
     <title>Human Age Estimation Through Panoramic Radiographs Images With Deep Neural Network</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/upload.css') }}">
   </head>
-  
-  <h1>
-    <center>     <br>    <br> 
-    Human Age Estimation Through Panoramic Radiographs Images With Deep Neural Network
-      </br> </br></center> 
-  </h1>
-
-
   <body>
-  <div class= "zone">
-    <br> 
-    <h1>Image Upload</h1>   
-
-  <div id="dropZ">
-<img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" height="180"/>
-<br></br>
-
-
-<form action="/upload" method="post" enctype="multipart/form-data" >
-    </div>
-      <div class = "selectFile">
-      <input type="file" name="image" accept=".jpg, .jpeg">
-
+    <h1>Upload Images</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="images" accept="image/*" multiple>
+      <br><br>
       <input type="submit" value="Upload">
     </form>
   </body>
-</div>
-</div>
-  
 </html>

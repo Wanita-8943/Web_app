@@ -5,10 +5,13 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import PIL
+import pandas as pd
+import os
+
 
 app = Flask(__name__)
 
-gender = {0: 'Female', 1: 'Male'}
+gender = {0: 'เพศหญิง', 1: 'เพศชาย'}
 
 import sys
 sys.path.append('/root/WebApp/Web_app/templates/Age.h5')
@@ -38,6 +41,7 @@ get_custom_objects().update({
 model2 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Gender.h5')
 model2.make_predict_function()
 
+
 def predict_Age1(Rt):
     # Read the image and preprocess it
     img = image.load_img(Rt, target_size=(150, 150))
@@ -45,7 +49,7 @@ def predict_Age1(Rt):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return np.around(result[0]+6, 2)
+    return result[0]
 
 def predict_Gender1(Rt):
     # Read the image and preprocess it
@@ -56,7 +60,7 @@ def predict_Gender1(Rt):
     result = model2.predict(g)
     print(result[0])
     print(result.argmax())
-    return gender[result.argmax()]
+    return result[0], gender[result.argmax()]
 
 def predict_Age2(Lt):
     # Read the image and preprocess it
@@ -65,8 +69,7 @@ def predict_Age2(Lt):
     x = x.reshape((1,) + x.shape) 
     x /= 255.
     result = model1.predict(x)
-    return np.around(result[0]+6, 2)
-
+    return result[0]
 
 def predict_Gender2(Lt):
     img = image.load_img(Lt, target_size=(150, 150))
@@ -76,8 +79,33 @@ def predict_Gender2(Lt):
     result = model2.predict(g)
     print(result[0])
     print(result.argmax())
-    return gender[result.argmax()]
+    return result[0], gender[result.argmax()]
     
+def create_cropped_images(img_path):
+    # Read the image and create cropped versions
+    img = Image.open(img_path)
+
+    # Left crop
+    frac = 0.6
+    left = 0
+    upper = 0
+    right = img.size[0] - ((1 - frac)) * img.size[0] 
+    bottom = img.size[1]
+    cropped_left = img.crop((left, upper, right, bottom))
+    Rt = f'static/Rt_{img_path.split("/")[-1]}'
+    cropped_left.save(Rt)
+
+    # Right crop
+    left = img.size[0] * ((1 - frac))
+    upper = 0
+    right = img.size[0]
+    bottom = img.size[1]
+    cropped_right= img.crop((left, upper, right, bottom))
+    flipped = cropped_right.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+    Lt = f'static/Lt_{img_path.split("/")[-1]}'
+    flipped.save(Lt)
+
+    return Rt, Lt
 
 
 
@@ -89,61 +117,61 @@ def index():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        # Read the uploaded image and save it to a temporary file
-        file = request.files['image']
-        img_path = 'static/panoramic.jpg'
-        file.save(img_path)
+        # Get a list of all uploaded files and process each one
+        images = request.files.getlist('images')
+        app.config['UPLOAD_FOLDER'] = '/root/WebApp/Web_app/static'
+        results = []
 
-        frac = 0.60
-        filename = img_path.split("/")[-1]
-
-        # Read the image and create cropped versions
-        img = Image.open(img_path)
-
-        #left---------------------------------------------------
-        left = 0
-        upper = 0
-        right = img.size[0]-((1-frac))*img.size[0] 
-        bottom = img.size[1]
-        cropped_left = img.crop((left, upper, right, bottom))
-        #save setting by youreself'
-        Rt = 'static/Rt_panoramic.jpg'
-        cropped_left.save(Rt)
+        for img in images:
+            # Save the image to a temporary file
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
+            img.save(file_path)
+            filename = os.path.basename(file_path)
+            # img_path = 'static/' + filename
+            img_path = 'static/' + filename
 
 
-        #right ---------------------------------------------------
-        left = img.size[0]*((1-frac))
-        upper = 0
-        right = img.size[0]
-        bottom = img.size[1]
-        cropped_right= img.crop((left, upper, right, bottom))
-        #save setting by youreself
-        cropped_right.save('static/unflip_'+filename)
+            # Predict the age and gender for the image
+            Rt, Lt = create_cropped_images(img_path)
 
-        #flip ---------------------------------------------------
-        #read the image
-        im = Image.open('static/unflip_'+filename)
+            age_pred = (predict_Age1(Rt)+predict_Age2(Lt))/2
+            age_pred1 = np.around(age_pred[0]+6, 2)
+            # age_pred1 = np.around(age_pred[0]+6)
 
-        #flip image
-        out = im.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-        Lt = 'static/Flip_panoramic.jpg'
-        out.save(Lt)
 
-        # Predict the age
-        # Predict the age
-        age_pred = predict_Age1(Rt)+predict_Age2(Lt)/2
-        age_pred1 = np.around(age_pred[0], 2)
+            result1, gender_pred1 = predict_Gender1(Rt)
+            result2, gender_pred2 = predict_Gender2(Lt)
 
-        gender_pred1 = predict_Gender1(Rt)
-        gender_pred2 = predict_Gender2(Lt)
+            if result1[0] > result1[1]:
+                max_result1 = result1[0]
+            else:
+                max_result1 = result1[1]
 
-        if gender_pred1 > gender_pred2:
-            gender_pred = gender_pred1
-        else:
-            gender_pred = gender_pred2
+            if result2[0] > result2[1]:
+                max_result2 = result2[0]
+            else:
+                max_result2 = result2[1]
 
-        # Render the prediction result
-        return render_template('test.html', prediction1=age_pred1, prediction2=gender_pred)
+            if max_result1 > max_result2:
+                gender_pred = gender_pred1
+            else:
+                gender_pred = gender_pred2
+
+            # Add the result to a list of results
+            results.append((img_path, age_pred1 , gender_pred))
+
+        # Write the predictions to a CSV file
+        with open('predictions.csv', 'w') as f:
+            f.write('Image path, อายุ (ปี), เพศ\n')
+            for result in results:
+                f.write(','.join(str(x) for x in result) + '\n')
+
+
+        df = pd.read_csv('predictions.csv')
+        table = df.to_html()
+
+        return render_template('test.html', table=table)
+
 
 
 if __name__ == '__main__':
