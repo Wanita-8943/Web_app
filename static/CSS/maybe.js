@@ -1,15 +1,17 @@
-function readURL(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $('#image-preview').attr('src', e.target.result);
-      }
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-  
-  $("#hidden-input").change(function() {
-    readURL(this);
-    $('.img-preview').removeClass('hidden');
-  });
-  
+const downloadButton = document.querySelector(`.download-button`)
+const downloadIcon = document.querySelector(`.download-icon`)
+const downloadLoader = document.querySelector(`.download-loader`)
+const downloadCheckMark = document.querySelector(`.check-svg`)
+const downloadText = document.querySelector(`.button-copy`)
+
+downloadButton.addEventListener('click', () => {
+    downloadIcon.classList.add(`hidden`)
+    downloadLoader.classList.remove(`hidden`)
+    downloadText.innerHTML = "DOWNLOADING";
+}, { once: true })
+
+downloadLoader.addEventListener('animationend', () => {
+    downloadLoader.classList.add(`hidden`)
+    downloadCheckMark.classList.remove(`hidden`)
+    downloadText.innerHTML = "DOWNLOADED";
+})

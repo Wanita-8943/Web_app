@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file, url_for
 from PIL import Image
 import numpy as np
 import tensorflow as tf
@@ -7,6 +7,7 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 import PIL
 import pandas as pd
 import os
+
 
 
 app = Flask(__name__)
@@ -161,18 +162,21 @@ def upload():
             results.append((img_path, age_pred1 , gender_pred))
 
         # Write the predictions to a CSV file
-        with open('predictions.csv', 'w') as f:
+        with open('static/predictions.csv', 'w') as f:
             f.write('Image path, อายุ (ปี), เพศ\n')
             for result in results:
                 f.write(','.join(str(x) for x in result) + '\n')
 
 
-        df = pd.read_csv('predictions.csv')
+        df = pd.read_csv('static/predictions.csv')
         table = df.to_html()
 
         return render_template('test.html', table=table)
 
-
+@app.route('/download')
+def download_file():
+    path = 'static/predictions.csv'
+    return send_file(path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
