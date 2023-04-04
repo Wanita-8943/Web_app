@@ -136,9 +136,15 @@ def upload():
             Rt, Lt = create_cropped_images(img_path)
 
             age_pred = (predict_Age1(Rt)+predict_Age2(Lt))/2
-            age_pred1 = np.around(age_pred[0]+6, 2)
-            # age_pred1 = np.around(age_pred[0]+6)
-
+            age_pred1 = np.around(age_pred[0] + 6, 2)
+            print(age_pred1)
+            years = int(age_pred1)
+            months = round((age_pred1 - years) * 12)
+            if months == 12:
+                years += 1
+                months = 0
+            age_pred2 = f"{years} ปี {months} เดือน"
+            print(age_pred2)
 
             result1, gender_pred1 = predict_Gender1(Rt)
             result2, gender_pred2 = predict_Gender2(Lt)
@@ -159,7 +165,7 @@ def upload():
                 gender_pred = gender_pred2
 
             # Add the result to a list of results
-            results.append((img_path, age_pred1 , gender_pred))
+            results.append((img_path, age_pred2 , gender_pred))
 
         # Write the predictions to a CSV file
         with open('static/predictions.csv', 'w') as f:
