@@ -165,11 +165,11 @@ def upload():
                 gender_pred = gender_pred2
 
             # Add the result to a list of results
-            results.append((img_path, age_pred2 , gender_pred))
+            results.append((filename, age_pred2 , gender_pred))
 
         # Write the predictions to a CSV file
         with open('static/predictions.csv', 'w') as f:
-            f.write('Image path, อายุ (ปี), เพศ\n')
+            f.write('ชื่อไฟล์, อายุ (ปี), เพศ\n')
             for result in results:
                 f.write(','.join(str(x) for x in result) + '\n')
 
