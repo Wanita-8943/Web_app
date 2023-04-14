@@ -15,7 +15,7 @@ app = Flask(__name__)
 gender = {0: 'เพศหญิง', 1: 'เพศชาย'}
 
 import sys
-sys.path.append('/root/WebApp/Web_app/templates/Age.h5')
+sys.path.append('../Web_app/templates/Age.h5')
 
 from efficientnet.layers import Swish, DropConnect
 from efficientnet.model import ConvKernalInitializer
@@ -27,11 +27,11 @@ get_custom_objects().update({
     'DropConnect':DropConnect
 })
 
-model1 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Age.h5')
+model1 = tf.keras.models.load_model('../Web_app/templates/Age.h5')
 model1.make_predict_function()
 
 
-sys.path.append('/root/WebApp/Web_app/templates/Gender.h5')
+sys.path.append('../Web_app/templates/Gender.h5')
 
 get_custom_objects().update({
     'ConvKernalInitializer': ConvKernalInitializer,
@@ -39,7 +39,7 @@ get_custom_objects().update({
     'DropConnect':DropConnect
 })
 
-model2 = tf.keras.models.load_model('/root/WebApp/Web_app/templates/Gender.h5')
+model2 = tf.keras.models.load_model('../Web_app/templates/Gender.h5')
 model2.make_predict_function()
 
 
